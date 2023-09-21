@@ -1,0 +1,156 @@
+Php artisan make:migration create_users
+Php artisan make:migration create_profiles
+Php artisan make:migration create_categories
+Php artisan make:migration create_brands
+Php artisan make:migration create_products
+Php artisan make:migration create_product_details
+Php artisan make:migration create_product_sliders
+Php artisan make:migration create_product_reviews
+Php artisan make:migration create_product_wishes
+Php artisan make:migration create_product_carts
+
+////////////////////////////////////////////////////////////
+////////////////////////Users table///////////////////////////////////
+
+$table->id();
+$table ->string('email',50)->unique();
+$table->string('otp',10);
+$table ->timestamp('created_at')->useCurrent();
+$table ->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+////////////////////////////////////////////////////////////
+////////////////////////Profiles table///////////////////////////////////
+
+$table->id();
+$table ->string('firstName',50);
+$table ->string('lastName',50);
+$table->string('mobile',10);
+$table->string('city',50);
+$table ->string('shippingAddress',1000);
+$table ->string('email',50)->unique();
+$table ->foreign('email')->references('email')->on('users')->restrictOnDelete()->cascadeOnUpdate();
+$table ->timestamp('created_at')->useCurrent();
+$table ->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+
+////////////////////////////////////////////////////////////
+////////////////////////Categories table///////////////////////////////////
+
+$table->id();
+$table ->string('categoryName',50);
+$table->string('categoryImg',300);
+$table ->timestamp('created_at')->useCurrent();
+$table ->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+
+////////////////////////////////////////////////////////////
+////////////////////////Brands table///////////////////////////////////
+
+$table->id();
+$table ->string('brandName',50);
+$table->string('brandImg',300);
+$table ->timestamp('created_at')->useCurrent();
+$table ->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+
+////////////////////////////////////////////////////////////
+////////////////////////Products table///////////////////////////////////
+$table->id();
+$table ->string('title',200);
+$table->string('short_des',500);
+$table->string('price',50);
+$table->boolean('discount');
+$table->string('discount_price',50);
+$table->string('image',200);
+$table->float('star');
+$table->boolean('stock');
+$table->enum('remark',['popular','new','top','special','trending','regular']);
+$table->unsignedBigInteger('category_id');
+$table->unsignedBigInteger('brand_id');
+$table ->foreign('category_id')->references('id')->on('categories')->restrictOnDelete()->cascadeOnUpdate();
+$table ->foreign('brand_id')->references('id')->on('brands')->restrictOnDelete()->cascadeOnUpdate();
+$table ->timestamp('created_at')->useCurrent();
+$table ->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+
+
+////////////////////////////////////////////////////////////
+////////////////////////Products details table///////////////////////////////////
+$table->id();
+$table->string('img1',200);
+$table->string('img2',200);
+$table->string('img3',200);
+$table->string('img4',200);
+$table->longText('des');
+$table->string('color',200);
+$table->string('size',200);
+//f key
+$table->unsignedBigInteger('product_id')->unique();
+$table->foreign('product_id')->references('id')->on('products')->restrictOnDelete()->restrictOnUpdate();
+
+$table->timestamp('created_at')->useCurrent;
+$table->timestamp('updated_at')->useCurrent->useCurrentOnUpdate;
+
+////////////////////////////////////////////////////////////
+////////////////////////Products slider table///////////////////////////////////
+$table->id();
+$table->string('title',200);
+$table->string('short_des',200);
+$table->string('image',200);
+
+//f key
+$table->unsignedBigInteger('product_id')->unique();
+$table->foreign('product_id')->references('id')->on('products')->restrictOnDelete()->restrictOnUpdate();
+
+$table->timestamp('created_at')->useCurrent;
+$table->timestamp('updated_at')->useCurrent->useCurrentOnUpdate;
+
+
+
+////////////////////////////////////////////////////////////
+////////////////////////Products reviews table///////////////////////////////////
+$table->id();
+$table->string('description',1000);
+
+//f key
+$table->string('email',50);
+$table->foreign('email')->references('email')->on('profiles')->restrictOnDelete()->restrictOnUpdate();
+
+$table->unsignedBigInteger('product_id');
+$table->foreign('product_id')->references('id')->on('products')->restrictOnDelete()->restrictOnUpdate();
+
+$table->timestamp('created_at')->useCurrent;
+$table->timestamp('updated_at')->useCurrent->useCurrentOnUpdate;
+
+
+////////////////////////////////////////////////////////////
+////////////////////////Products wishlists table///////////////////////////////////
+$table->id();
+
+
+//f key
+$table->string('email',50);
+$table->foreign('email')->references('email')->on('profiles')->restrictOnDelete()->restrictOnUpdate();
+
+$table->unsignedBigInteger('product_id');
+$table->foreign('product_id')->references('id')->on('products')->restrictOnDelete()->restrictOnUpdate();
+
+$table->timestamp('created_at')->useCurrent;
+$table->timestamp('updated_at')->useCurrent->useCurrentOnUpdate;
+
+
+////////////////////////////////////////////////////////////
+////////////////////////Products carts table///////////////////////////////////
+        $table->id();
+
+            //f key
+            $table->string('email',50);
+            $table->foreign('email')->references('email')->on('profiles')->restrictOnDelete()->restrictOnUpdate();
+
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->restrictOnDelete()->restrictOnUpdate();
+
+            $table->string('color',200);
+            $table->string('size',200);
+
+            $table->timestamp('created_at')->useCurrent;
+            $table->timestamp('updated_at')->useCurrent->useCurrentOnUpdate;

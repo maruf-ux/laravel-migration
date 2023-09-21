@@ -1,0 +1,16 @@
+1. select * from `products` inner join `categories` on `products`.`category_id` = `= ` inner join `brands` on `products`.`brand_id` = `= `
+
+$products = DB::table('products')
+        // ->join('categories','products.category_id', '= ','categories.id')
+        //'= ' is not correct and follow there are no spaces between the = sign
+        ->join('categories','products.category_id', '=','categories.id')
+        //the right way no space between a equal sign '='
+        ->join('brands','products.brand_id', '=','brands.id')
+        ->get();
+        return $products;
+
+// !cautions for group by and having
+
+'strict' => false,
+
+path -> config\database.php
